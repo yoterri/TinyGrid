@@ -1,5 +1,5 @@
 <?php
-namespace yoterri\DataGrid;
+namespace Com\DataGrid;
 
 use Zend\Escaper;
 
