@@ -1,1 +1,1 @@
-# TinyGrid
+# tiny grid
