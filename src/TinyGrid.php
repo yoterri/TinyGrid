@@ -6,6 +6,8 @@ use Zend\Escaper;
 use Zend\Paginator\Adapter\NullFill;
 use Zend\Paginator\Adapter\AdapterInterface;
 use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Adapter\ArrayAdapter;
+use Zend\Paginator\Adapter\Iterator;
 use Zend\Paginator\Paginator;
 
 use Zend\Db\Sql\Select;
@@ -79,17 +81,17 @@ class TinyGrid implements EventManagerAwareInterface
     /**
      * @var bool
      */
-    protected $showPaginator;
+    protected $showPaginator = true;
 
     /**
      * @var bool
      */
-    protected $showHeader;
+    protected $showHeader = true;
 
     /**
      * @var bool
      */
-    protected $paginatorPosition;
+    protected $paginatorPosition = 'bottom';
 
     /**
      * @var Zend\Paginator\Paginator
@@ -760,11 +762,11 @@ class TinyGrid implements EventManagerAwareInterface
             }
             elseif($source instanceof \Iterator)
             {
-                $adapter = new Zend\Paginator\Adapter\Iterator($source);
+                $adapter = new Iterator($source);
             }
             elseif(is_array($source))
             {
-                $adapter = new Zend\Paginator\Adapter\ArrayAdapter($source);
+                $adapter = new ArrayAdapter($source);
             }
             else
             {
@@ -1059,16 +1061,16 @@ class TinyGrid implements EventManagerAwareInterface
     protected  function _renderRows()
     {
         $html = '';
-        $dataset = (array)$this->getPaginator()->getCurrentItems();
+        $rowset = (array)$this->getPaginator()->getCurrentItems();
 
         $eventParams = array(
-            'rowset' => $dataset,
+            'rowset' => $rowset,
         );
 
         $event = $this->_triggerEvent('tinygrid.rowset_current_page', $eventParams);
         if($event)
         {
-            $rowset = (array)$event->getParam('rowset');
+            $rowset = $event->getParam('rowset');
         }
 
 
@@ -1903,7 +1905,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     protected function _applyFilterArray($source, $config)
     {
-        throw new \Exception('Filter array is not implemented');
+        #throw new \Exception('Filter array is not implemented');
         return $source;
     }
 
