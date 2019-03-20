@@ -1197,8 +1197,8 @@ class TinyGrid implements EventManagerAwareInterface
                 
             case 'date':
 
-                $format_to = isset($config['date_format_to']) ? $config['date_format_to'] : null;
-                $format_from = isset($config['date_format_from']) ? $config['date_format_from'] : null;
+                $format_to = isset($config['date_format_to']) ? $config['date_format_to'] : 'M j, Y H:i:s';
+                $format_from = isset($config['date_format_from']) ? $config['date_format_from'] : 'Y-m-d H:i:s';
                 $def = isset($config['empty_date']) ? $config['empty_date'] : '-';
 
                 if($value)
@@ -1306,7 +1306,7 @@ class TinyGrid implements EventManagerAwareInterface
         $ts = (!ctype_digit($ts)) ? strtotime($ts) : $ts;
 
         $diff = time() - $ts;
-        if($diff == 0)
+        if(0 == $diff)
         {
             return 'now';
         }
@@ -1363,7 +1363,84 @@ class TinyGrid implements EventManagerAwareInterface
                 return 'last month';
             }
 
-            return date('F d, Y', $ts);
+            #
+            $startDate = date('Y-m-d', $ts);
+            $endDate   = date('Y-m-d'); 
+
+            #
+            $o_month = substr($startDate, 5, 2);
+            $o_day = substr($startDate, 8, 2);
+            $o_year = substr($startDate, 0, 4);
+            $n_month = substr($endDate, 5, 2);
+            $n_day = substr($endDate, 8, 2);
+            $n_year = substr($endDate, 0, 4);
+
+            if($o_day > $n_day)
+            {
+                $r_days = 30 + ($n_day - $o_day);
+                $o_month++;
+            } 
+            else
+            {
+                $r_days = ($n_day - $o_day);
+            }
+             
+            if($o_month > $n_month)
+            {
+                $r_month = 12 + ($n_month - $o_month);
+                $o_year++;
+            }
+            else
+            {
+                $r_month = ($n_month - $o_month);
+            }
+
+            $r_year = ($n_year - $o_year);
+
+            #
+            $numDays = '';
+            if($r_year)
+            {
+                $numDays .= $r_year;
+                if(1 == $r_year)
+                {
+                    $numDays .= ' year ';
+                }
+                else
+                {
+                    $numDays .= ' years ';
+                }
+            }
+
+            if($r_month)
+            {
+                $numDays .= $r_month;
+                if(1 == $r_month)
+                {
+                    $numDays .= ' month ';
+                }
+                else
+                {
+                    $numDays .= ' months ';
+                }
+            }
+            
+            if($r_days)
+            {
+                $numDays .= $r_days;
+                if(1 == $r_days)
+                {
+                    $numDays .= ' day';
+                }
+                else
+                {
+                    $numDays .= ' days';
+                }
+            }
+
+            #
+            return $numDays;
+            #return date('F d, Y', $ts);
         }
         else
         {
@@ -1452,6 +1529,11 @@ class TinyGrid implements EventManagerAwareInterface
         }
 
         $date = \DateTime::createFromFormat($formatFrom, $dateStr);
+        if(!$date)
+        {
+            return $defaultOnEmpty;
+        }
+
         return $date->format($formatTo);
     }
 
