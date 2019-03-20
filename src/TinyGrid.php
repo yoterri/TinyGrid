@@ -1067,7 +1067,7 @@ class TinyGrid implements EventManagerAwareInterface
             'rowset' => $rowset,
         );
 
-        $event = $this->_triggerEvent('tinygrid.rowset_current_page', $eventParams);
+        $event = $this->_triggerEvent('tinygrid.current_page', $eventParams);
         if($event)
         {
             $rowset = $event->getParam('rowset');
