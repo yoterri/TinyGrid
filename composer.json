@@ -17,7 +17,7 @@
 
     "autoload": {
         "psr-4": {
-            "Com\\DataGrid\\": "src/"
+            "Com\\Component\\TinyGrid\\": "src/"
         }
     }
 }

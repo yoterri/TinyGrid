@@ -1,5 +1,5 @@
 <?php
-namespace Com\DataGrid;
+namespace Com\Component\TinyGrid;
 
 use Zend\Escaper;
 
@@ -21,7 +21,7 @@ use Zend\EventManager\Event;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManagerAwareInterface;
 
-class TinyGrid implements EventManagerAwareInterface
+class Grid implements EventManagerAwareInterface
 {
     /**
      * @var string
@@ -198,7 +198,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @var string $basePath
-     * @return TinyGrid
+     * @return Grid
      */
     function setBasePath($basePath)
     {
@@ -217,7 +217,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param array $params
-     * @return TinyGrid
+     * @return Grid
      */
     function setQueryParams(array $queryParams)
     {
@@ -229,7 +229,7 @@ class TinyGrid implements EventManagerAwareInterface
     /**
      * @param string $key
      * @param string $value
-     * @return TinyGrid
+     * @return Grid
      */
     function setQueryParam($key, $value)
     {
@@ -266,7 +266,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param string $gridName
-     * @return TinyGrid
+     * @return Grid
      */
     function setGridName($gridName)
     {
@@ -286,7 +286,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param  Escaper\Escaper $escaper
-     * @return TinyGrid
+     * @return Grid
      */
     public function setEscaper(Escaper\Escaper $escaper)
     {
@@ -307,7 +307,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param $eventManager EventManagerInterface
-     * @return TinyGrid
+     * @return Grid
      */
     function setEventManager(EventManagerInterface $eventManager)
     {
@@ -333,7 +333,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param int $limit
-     * @return TinyGrid
+     * @return Grid
      */
     function setDefaultLimit($limit)
     {
@@ -353,7 +353,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param string $val
-     * @return TinyGrid
+     * @return Grid
      */
     function setPageVarName($val)
     {
@@ -378,7 +378,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param string $val
-     * @return TinyGrid
+     * @return Grid
      */
     function setSortVarName($val)
     {
@@ -403,7 +403,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param string $val
-     * @return TinyGrid
+     * @return Grid
      */
     function setOrderVarName($val)
     {
@@ -428,7 +428,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param string $val
-     * @return TinyGrid
+     * @return Grid
      */
     function setLimitVarName($val)
     {
@@ -454,7 +454,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param array $columns
-     * @return TinyGrid
+     * @return Grid
      */
     function setColumns(array $columns = array())
     {
@@ -474,7 +474,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param bool $var
-     * @return TinyGrid
+     * @return Grid
      */
     function setShowPaginator($val)
     {
@@ -494,7 +494,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param bool $var
-     * @return TinyGrid
+     * @return Grid
      */
     function setShowHeader($val)
     {
@@ -514,7 +514,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param string $val top|bottom|both|none
-     * @return TinyGrid
+     * @return Grid
      */
     function setPaginatorPosition($val)
     {
@@ -536,7 +536,7 @@ class TinyGrid implements EventManagerAwareInterface
     /**
      * @param AbstractTableGateway|Select|Iterator|array $source
      * @param dbAdapterInterface $dbAdapter
-     * @return TinyGrid
+     * @return Grid
      */
     function setSource($source, dbAdapterInterface $dbAdapter = null)
     {
@@ -604,7 +604,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @var array
-     * @return TinyGrid
+     * @return Grid
      */
     function setHeaderAttr(array $attr = array())
     {
@@ -622,7 +622,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @var array
-     * @return TinyGrid
+     * @return Grid
      */
     function setMainContainerAttr(array $attr = array())
     {
@@ -640,7 +640,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @var array
-     * @return TinyGrid
+     * @return Grid
      */
     function setTableContainerAttr(array $attr = array())
     {
@@ -660,7 +660,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @var array
-     * @return TinyGrid
+     * @return Grid
      */
     function setTableAttr(array $attr = array())
     {
@@ -679,7 +679,7 @@ class TinyGrid implements EventManagerAwareInterface
 
     /**
      * @param array $config
-     * @return TinyGrid
+     * @return Grid
      */
     function setPaginatorConfig(array $config)
     {
@@ -782,7 +782,7 @@ class TinyGrid implements EventManagerAwareInterface
 
 
     /**
-     * @return TinyGrid
+     * @return Grid
      */
     function build()
     {
