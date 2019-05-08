@@ -1,4 +1,131 @@
 <?php
+
+
+/*
+$columns = [
+    'id' => [
+        'header' => [
+            'attributes' => ['style' => 'width:30%'],
+
+            'label' => 'ID',
+
+            'sort' => true,
+            'sort_column' => ['sort_col1', 'sort_col2'],
+            'sort_default' => ['desc'],
+
+            'filter' => 1,
+            'filter_type' => '=', # > | < | >= | <=
+            'filter_column' => ['col_name1', 'col_name2']
+            'filter_values' => [
+                1 => 'One',
+                5 => 'Five',
+                6 => 'Six',
+            ],
+        ],
+
+        'cell' => [
+            'type' => 'action',
+
+            #'btn_type' => 'btn-default',
+            #'btn_size' => 'btn-xs',
+
+            'data' => function($row, $config) {
+                return [
+                    [
+                        #'href' => '#',
+                        'label' => '<i class="fa fa-pencil"></i>',
+                        #'attributes' => [],
+                    ],
+                    [
+                        'href' => '#',
+                        'label' => 'hola2',
+                        #'attributes' => [],
+                    ],
+                ];
+            }
+        ],
+
+
+        'cell' => [
+            'menu' => function($row, $config) {
+                $r = "
+                <div class='row-actions'>
+                    <a href='lorem'>Ipsum</a> |
+                    <a href='lorem'>Ipsum</a> |
+                    <a href='lorem'>Ipsum</a> |
+                    <a href='lorem'>Ipsum</a> |
+                </div>";
+                return $r;
+            }
+        ],
+
+        'cell' => [
+            'callback' => function($value, $row, $field, $config) {
+                return $value;
+            },
+        ],
+
+        'cell' => [
+            'type' => 'custom',
+            'data' => 'The value to be shown',
+        ],
+
+        'cell' => [
+            'type' => 'number',
+        ],
+
+        'cell' => [
+            'type' => 'amount',
+            'decimal_separator' => '.',
+            'thousands_separator' => ','
+        ],
+
+        'cell' => [
+            'type' => 'html',
+        ],
+
+        'cell' => [
+            'type' => 'code',
+        ],
+
+        'cell' => [
+            'type' => 'relative_date',
+        ],
+
+        'cell' => [
+            'type' => 'password', # 'mask',
+            'symbol' => '*',
+        ],
+
+        'cell' => [
+            'type' => 'enum'
+            'source' => [1 => 'One', 5 => 'Five'],
+        ],
+
+        'cell' => [
+            'type' => 'date',
+            'date_format_to' => 'F d, Y',
+            'date_format_from' => 'Y-m-d',
+            'empty_date' => '-'
+        ],
+
+        'cell' => [
+            'type' => 'money',
+            'sign' => '$',
+            'decimal_places' => 2,
+            'decimal_separator' => '.',
+            'thousands_separator' => ','
+        ],
+
+        
+
+
+    ],
+];
+
+$this->setColumns($columns);
+*/
+
 namespace Com\Component\TinyGrid;
 
 use Zend\Escaper;
@@ -15,14 +142,15 @@ use Zend\Db\Sql\Where;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterInterface as dbAdapterInterface;
 use Zend\Db\TableGateway\TableGateway;
-
-use Zend\EventManager\EventManager;
 use Zend\EventManager\Event;
-use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerAwareTrait;
+
 
 class Grid implements EventManagerAwareInterface
 {
+    use EventManagerAwareTrait;
+
     /**
      * @var string
      */
@@ -42,11 +170,6 @@ class Grid implements EventManagerAwareInterface
      * @var Escaper\Escaper
      */
     protected  $escaper = null;
-
-    /**
-     * @var EventManagerInterface
-     */
-    protected  $eventManager = null;
 
     /**
      * @var int
@@ -184,11 +307,11 @@ class Grid implements EventManagerAwareInterface
 
     
     /**
-     * @param string $gridName
      * @param string $basePath
      * @param string $queryParams
+     * @param string $gridName
      */   
-    public function __construct($gridName = null, $basePath = null, array $queryParams = array())
+    public function __construct($basePath = null, array $queryParams = array(), $gridName = null)
     {
         $this->setBasePath($basePath);
         $this->setQueryParams($queryParams);
@@ -302,32 +425,6 @@ class Grid implements EventManagerAwareInterface
     public function getEscaper()
     {
         return $this->escaper;
-    }
-
-
-    /**
-     * @param $eventManager EventManagerInterface
-     * @return Grid
-     */
-    function setEventManager(EventManagerInterface $eventManager)
-    {
-        $eventManager->addIdentifiers(array(
-            get_called_class()
-        ));
-    
-        $this->eventManager = $eventManager;
-        
-        # $this->getEventManager()->trigger('sendTweet', null, array('content' => $content));
-        return $this;
-    }
-
-
-    /**
-     * @return null | EventManagerInterface
-     */
-    public function getEventManager()
-    {
-        return $this->eventManager;
     }
 
 
@@ -879,12 +976,6 @@ class Grid implements EventManagerAwareInterface
             for(i in s_params)
             {
                 var s = s_params[i];
-
-                if('' == s)
-                {
-                    continue;
-                }
-
                 params += i + '=' + s + '&';
             }
 
@@ -1068,10 +1159,7 @@ class Grid implements EventManagerAwareInterface
         );
 
         $event = $this->_triggerEvent('tinygrid.current_page', $eventParams);
-        if($event)
-        {
-            $rowset = $event->getParam('rowset');
-        }
+        $rowset = $event->getParam('rowset');
 
 
         foreach($rowset as $index => $row)
@@ -1086,11 +1174,8 @@ class Grid implements EventManagerAwareInterface
             );
 
             $event = $this->_triggerEvent('tinygrid.render_row', $eventParams);
-            if($event)
-            {
-                $attributes = (array)$event->getParam('attributes');
-                $row = $event->getParam('row');
-            }
+            $attributes = (array)$event->getParam('attributes');
+            $row = $event->getParam('row');
             
 
             #
@@ -1123,10 +1208,8 @@ class Grid implements EventManagerAwareInterface
         );
 
         $event = $this->_triggerEvent('tinygrid.render_cell', $eventParams);
-        if($event)
-        {
-            $config = (array)$event->getParam('cell');
-        }
+        $config = (array)$event->getParam('cell');
+        
 
         $value = isset($row[$field]) ? $row[$field] : null;
         if(isset($config['strip_tags']) && (true == $config['strip_tags']))
@@ -1566,10 +1649,7 @@ class Grid implements EventManagerAwareInterface
             );
 
             $event = $this->_triggerEvent('tinygrid.render_header', $eventParams);
-            if($event)
-            {
-                $header = (array)$event->getParam('header');
-            }
+            $header = (array)$event->getParam('header');
             
 
             $label = isset($header['label']) ? $header['label'] : '';
@@ -2273,13 +2353,15 @@ class Grid implements EventManagerAwareInterface
      */
     protected function _triggerEvent($name, array $eventParams)
     {
+        $event = new Event($name, $this, $eventParams);
+
         $eventManager = $this->getEventManager();
         if($eventManager)
         {
-            $event = new Event($name, $this, $eventParams);
             $this->getEventManager()->triggerEvent($event);
-            return $event;
         }
+
+        return $event;
     }
 
 
