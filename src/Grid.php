@@ -128,23 +128,23 @@ $this->setColumns($columns);
 
 namespace Com\Component\TinyGrid;
 
-use Zend\Escaper;
+use Laminas\Escaper;
 
-use Zend\Paginator\Adapter\NullFill;
-use Zend\Paginator\Adapter\AdapterInterface;
-use Zend\Paginator\Adapter\DbSelect;
-use Zend\Paginator\Adapter\ArrayAdapter;
-use Zend\Paginator\Adapter\Iterator;
-use Zend\Paginator\Paginator;
+use Laminas\Paginator\Adapter\NullFill;
+use Laminas\Paginator\Adapter\AdapterInterface;
+use Laminas\Paginator\Adapter\DbSelect;
+use Laminas\Paginator\Adapter\ArrayAdapter;
+use Laminas\Paginator\Adapter\Iterator;
+use Laminas\Paginator\Paginator;
 
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Where;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Adapter\AdapterInterface as dbAdapterInterface;
-use Zend\Db\TableGateway\TableGateway;
-use Zend\EventManager\Event;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerAwareTrait;
+use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Where;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\AdapterInterface as dbAdapterInterface;
+use Laminas\Db\TableGateway\TableGateway;
+use Laminas\EventManager\Event;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerAwareTrait;
 
 
 class Grid implements EventManagerAwareInterface
@@ -217,7 +217,7 @@ class Grid implements EventManagerAwareInterface
     protected $paginatorPosition = 'bottom';
 
     /**
-     * @var Zend\Paginator\Paginator
+     * @var Laminas\Paginator\Paginator
      */
     protected $paginator = null;
 
@@ -846,7 +846,7 @@ class Grid implements EventManagerAwareInterface
 
 
     /**
-     * @return Zend\Paginator\Paginator
+     * @return Laminas\Paginator\Paginator
      */
     function getPaginator()
     {
